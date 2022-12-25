@@ -1,5 +1,5 @@
 import redis
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from tech_test.services import user_service
 from tech_test.models.schemas import UserBase, LoginUserBase, UpdateUserBase
 from tech_test.models.database import get_db
@@ -37,5 +37,6 @@ async def get_all_user(db=Depends(get_db)):
 
 
 @route.get('/block/user/{username}')
-async def block_user(username: str):
-    return await user_service.block_user(username)
+async def block_user(username: str, request: Request):
+    header = request.headers.get('x-service-key')
+    return await user_service.block_user(username, header)

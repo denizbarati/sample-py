@@ -1,8 +1,7 @@
 from tech_test.models.schemas import UserBase
 from sqlalchemy.orm.session import Session
 from tech_test.models import models
-from tech_test.core.config import get_settings
-from tech_test.core import errors
+from tech_test.core.config import settings
 from tech_test.core import token
 from tech_test.core.redis import set_in_redis, get_from_redis
 
@@ -55,7 +54,9 @@ async def get_all_user(db: Session):
     return db.query(models.UserModel).all()
 
 
-async def block_user(username):
+async def block_user(username, header):
+    if header != settings.header_key:
+        return {"unauthorized"}
     user_blocked = await get_from_redis(username)
     if user_blocked:
         return {"user has been blocked!"}

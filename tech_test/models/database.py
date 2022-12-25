@@ -7,7 +7,7 @@ from tech_test.core.config import settings
 logger = logging.getLogger('uvicorn.error')
 # dialect+driver://username:password@host:port/database
 # postgresql://deniz:123deniz@localhost/pyapp
-engine = create_engine("postgresql://deniz:123deniz@localhost/pyapp")
+engine = create_engine(settings.sqlalchemy_database_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
