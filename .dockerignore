@@ -1,0 +1,11 @@
+.idea
+venv
+*.py[co]
+build
+*.db
+*.log
+.git
+*.whl
+.env
+.env_example
+*.egg-info
