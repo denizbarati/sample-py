@@ -118,3 +118,4 @@ dmypy.json
 cython_debug/
 .idea/misc.xml
 .idea/vcs.xml
+.idea/tech_test.iml
