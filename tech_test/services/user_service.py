@@ -4,6 +4,7 @@ from tech_test.models import models
 from tech_test.core.config import get_settings
 from tech_test.core import errors
 from tech_test.core import token
+from tech_test.core.redis import set_in_redis, get_from_redis
 
 
 #
@@ -26,6 +27,10 @@ async def register(db: Session, user_req: UserBase):
 
 async def login(db: Session, username: str, password: str):
     SECRET = 'deniz123'
+    # check user not block
+    user_blocked = await get_from_redis(username)
+    if user_blocked:
+        return {"user is blocked , user can not login"}
     is_user_exist = db.query(models.UserModel).filter(models.UserModel.username == username).first()
     if is_user_exist:
         if password != is_user_exist.password:
@@ -38,12 +43,9 @@ async def login(db: Session, username: str, password: str):
 
 async def update(db: Session, user_req: UserBase, username: str):
     user = db.query(models.UserModel).filter(models.UserModel.username == username)
-    print(">>>>>", user)
     user.update({
         models.UserModel.name: user_req.name,
-        models.UserModel.familyname: user_req.familyname,
-        # models.UserModel.username: user_req.username,
-        # models.UserModel.password: user_req.password,
+        models.UserModel.familyname: user_req.familyname
     })
     db.commit()
     return 'user has been updated'
@@ -51,3 +53,11 @@ async def update(db: Session, user_req: UserBase, username: str):
 
 async def get_all_user(db: Session):
     return db.query(models.UserModel).all()
+
+
+async def block_user(username):
+    user_blocked = await get_from_redis(username)
+    if user_blocked:
+        return {"user has been blocked!"}
+    await set_in_redis(username, username)
+    return {"user successfully blocked"}

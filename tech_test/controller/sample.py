@@ -34,3 +34,8 @@ async def update_user(username_id: str, user: UpdateUserBase, db=Depends(get_db)
 @route.get('/all')
 async def get_all_user(db=Depends(get_db)):
     return await user_service.get_all_user(db)
+
+
+@route.get('/block/user/{username}')
+async def block_user(username: str):
+    return await user_service.block_user(username)
