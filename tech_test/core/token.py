@@ -3,7 +3,7 @@ import json
 from base64 import b64decode
 from functools import wraps
 from typing import Optional, Tuple, Union
-
+from datetime import datetime, timedelta
 import redis as redis
 from fastapi import Depends, HTTPException
 from jose import JWTError, constants, jwt
@@ -39,11 +39,9 @@ class Role(enum.Enum):
 
 
 class Auth(BaseModel):
-    user_id: int
-    kyc_level: int = 0
-    phone_number: str = ""
-    email: Optional[str] = ""
-    user_type: str
+    username: str
+    familyname: str = ""
+    anme: str = ""
 
     def __json__(self, **options):
         return self.json()
@@ -131,3 +129,16 @@ def create_token(secret: str, url: str, username: str):
         data={'sub': username}
     )
     return {'access_token': access_token}
+
+
+def generate_token(_type: str, expire: int, data: Auth, settings: Settings) -> str:
+    key = settings.jwt_pri_key
+    payload = {
+        "sub": str(data.username),
+        "type": _type,
+        "username": data.username,
+        "name": data.name,
+        "familyname": data.familyname,
+    }
+    token = jwt.encode(payload, key, 'HS256')
+    return token

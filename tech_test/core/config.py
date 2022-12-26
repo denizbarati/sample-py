@@ -18,6 +18,9 @@ class Settings(BaseSettings):
     debug: bool
     header_key: str
     broker_uri: str
+    bsc_api_key: str
+    token_expire: str
+    jwt_pri_key: str
 
     class Config:
         env_file = ".env"

@@ -6,6 +6,7 @@ from tech_test.core import token
 from tech_test.core.redis import set_in_redis, get_from_redis
 from tech_test.tasks import tasks
 
+
 #
 # class UserService:
 #     def __init__(self):
@@ -36,8 +37,8 @@ async def login(db: Session, username: str, password: str, request):
             return {"password or username is wrong"}
     else:
         return {"user not found"}
-    save_ip = tasks.add_ip_user_in_db(db, username, '1.1.1.2')
-    return token.create_token(SECRET, '/login', username)
+    # save_ip = tasks.add_ip_user_in_db(db, username, '1.1.1.2')
+    return token.generate_token('token', settings.token_expire, is_user_exist, settings)
 
 
 async def update(db: Session, user_req: UserBase, username: str):

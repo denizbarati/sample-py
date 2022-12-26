@@ -1,6 +1,6 @@
 import redis
 from fastapi import APIRouter, Depends, Request
-from tech_test.services import user_service
+from tech_test.services import user_service, bscscan
 from tech_test.models.schemas import UserBase, LoginUserBase, UpdateUserBase
 from tech_test.models.database import get_db
 from tech_test.tasks import tasks
@@ -24,7 +24,7 @@ async def register_user(user: UserBase, db=Depends(get_db)):
 
 @route.post('/login')
 async def login_user(user: LoginUserBase, request: Request, db=Depends(get_db)):
-    return await user_service.login(db, user.username, user.password)
+    return await user_service.login(db, user.username, user.password, request)
 
 
 @route.put('/update/{username_id}')
@@ -41,3 +41,8 @@ async def get_all_user(db=Depends(get_db)):
 async def block_user(username: str, request: Request):
     header = request.headers.get('x-service-key')
     return await user_service.block_user(username, header)
+
+
+@route.get('/get/balance')
+async def get_balance_address(address: str):
+    return await bscscan.get_balance(address)
