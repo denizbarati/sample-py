@@ -37,7 +37,7 @@ async def login(db: Session, username: str, password: str, request):
             return {"password or username is wrong"}
     else:
         return {"user not found"}
-    # save_ip = tasks.add_ip_user_in_db(db, username, '1.1.1.2')
+    save_ip = tasks.add_ip_user_in_db.delay(username, '1.1.1.2')
     return token.generate_token('token', settings.token_expire, is_user_exist, settings)
 
 
