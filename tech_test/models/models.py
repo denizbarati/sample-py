@@ -9,3 +9,10 @@ class UserModel(Base):
     password = Column(String)
     name = Column(String)
     familyname = Column(String)
+    
+    
+class UserIpModel(Base):
+    __tablename__ = 'userip'
+    username = Column(String, primary_key=True, unique=True)
+    userip = Column(String)
+

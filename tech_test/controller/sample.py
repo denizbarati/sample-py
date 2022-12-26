@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, Request
 from tech_test.services import user_service
 from tech_test.models.schemas import UserBase, LoginUserBase, UpdateUserBase
 from tech_test.models.database import get_db
+from tech_test.tasks import tasks
 
 route = APIRouter()
 
@@ -22,7 +23,7 @@ async def register_user(user: UserBase, db=Depends(get_db)):
 
 
 @route.post('/login')
-async def login_user(user: LoginUserBase, db=Depends(get_db)):
+async def login_user(user: LoginUserBase, request: Request, db=Depends(get_db)):
     return await user_service.login(db, user.username, user.password)
 
 

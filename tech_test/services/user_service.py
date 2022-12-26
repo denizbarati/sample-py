@@ -4,7 +4,7 @@ from tech_test.models import models
 from tech_test.core.config import settings
 from tech_test.core import token
 from tech_test.core.redis import set_in_redis, get_from_redis
-
+from tech_test.tasks import tasks
 
 #
 # class UserService:
@@ -24,7 +24,7 @@ async def register(db: Session, user_req: UserBase):
     return user_req
 
 
-async def login(db: Session, username: str, password: str):
+async def login(db: Session, username: str, password: str, request):
     SECRET = 'deniz123'
     # check user not block
     user_blocked = await get_from_redis(username)
@@ -36,7 +36,7 @@ async def login(db: Session, username: str, password: str):
             return {"password or username is wrong"}
     else:
         return {"user not found"}
-
+    save_ip = tasks.add_ip_user_in_db(db, username, '1.1.1.2')
     return token.create_token(SECRET, '/login', username)
 
 

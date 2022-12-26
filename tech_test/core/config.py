@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     otel_server: str
     debug: bool
     header_key: str
+    broker_uri: str
 
     class Config:
         env_file = ".env"

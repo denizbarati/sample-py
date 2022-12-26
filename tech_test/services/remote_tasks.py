@@ -1,7 +1,7 @@
 from typing import Union
 
 import logging
-from tech_test.task_manager import app
+from tech_test.task_manager import celery_app
 logger = logging.getLogger('uvicorn.error')
 
 # def new_order_set(order_id):

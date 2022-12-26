@@ -12,7 +12,6 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 from starlette.middleware.cors import CORSMiddleware
-
 from tech_test import controller
 from tech_test.core.config import get_settings
 from tech_test.models.database import engine
@@ -41,7 +40,6 @@ def create_app() -> FastAPI:
             root_path=f"/{env.service_name}",
         )
         origins = env.origin.split()
-
     app = FastAPI(**local_config, )
     app.add_middleware(
         CORSMiddleware,
