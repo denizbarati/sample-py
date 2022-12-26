@@ -22,7 +22,6 @@ run project:
 
     1 - python3.9 -m venv venv
     2 - . venv/bin/activate
-    3 - pip freeze 
+    3 - pip freeze
     4 - pip install -r requirment.txt
     5 - pip install -e .
-    
