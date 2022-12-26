@@ -141,4 +141,4 @@ def generate_token(_type: str, expire: int, data: Auth, settings: Settings) -> s
         "familyname": data.familyname,
     }
     token = jwt.encode(payload, key, 'HS256')
-    return token
+    return {"token": token}
