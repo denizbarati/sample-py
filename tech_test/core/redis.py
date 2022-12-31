@@ -1,8 +1,11 @@
+from tech_test.core.config import get_settings
+import aioredis
 import asyncio
 
-import aioredis
+env = get_settings()
 
-redis = aioredis.from_url("redis://localhost/1")
+redis = aioredis.from_url(env.redis_url)
+
 
 async def get_from_redis(key: str):
     value = await redis.get(key)
@@ -13,4 +16,3 @@ async def get_from_redis(key: str):
 async def set_in_redis(value: str, key: str):
     value = await redis.set(key, value)
     return value
-
